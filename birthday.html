@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Website rainlove - nơi chia sẻ tình yêu thương." />
+    <title>Textlove</title>
+    <link rel="icon" href="https://github.com/Panbap/anh/blob/main/icon1.png?raw=true" type="image/png" />
+    <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@100..800&display=swap" rel="stylesheet">
+    <style>
+        html,
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            color: white;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        #sticker {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 450px;
+            height: 450px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        #nextPageBtn {
+            position: fixed;
+            top: calc(50% + 240px);
+            /* thấp hơn ảnh sticker (450px / 2 = 225 + chút khoảng cách) */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 11;
+            padding: 8px 15px;
+            font-size: 1.2rem;
+            background-color: #f584b7;
+            border: none;
+            border-radius: 8px;
+            font-family: "Playpen Sans", cursive;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(245, 132, 183, 0.6);
+            transition: background-color 0.3s ease;
+        }
+
+        #nextPageBtn:hover {
+            background-color: #e0538d;
+        }
+
+        audio {
+            display: none;
+        }
+
+        #rotateWarning {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgb(199, 199, 199);
+            color: rgb(0, 0, 0);
+            font-size: 1.2rem;
+            text-align: center;
+            font-family: "Playpen Sans", cursive;
+            padding-top: 40vh;
+            z-index: 20;
+        }
+
+        #rotateIcon {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+            animation: rotatePhone 2s infinite ease-in-out;
+            transform-origin: center;
+        }
+
+        @keyframes rotatePhone {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(20deg);
+            }
+
+            50% {
+                transform: rotate(0deg);
+            }
+
+            75% {
+                transform: rotate(-20deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            #sticker {
+                width: 150px;
+                height: 150px;
+            }
+
+            #nextPageBtn {
+                top: calc(50% + 100px);
+                padding: 10px 15px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="rainCanvas"></canvas>
+    <canvas id="canvas"></canvas>
+    <img id="sticker" src="" alt="Sticker" />
+    <button id="nextPageBtn" style="display:none;">Quà nè</button>
+    <audio id="bgm" loop></audio>
+
+    <div id="rotateWarning">
+        <img id="rotateIcon" src="./img/123.png" alt="Rotate phone" />
+        <br />
+        Vui lòng xoay ngang màn hình!
+    </div>
+
+    <script>
+        const _0x4426bf=_0x55e4;(function(_0x458623,_0x17a2ab){const _0x1c007f=_0x55e4,_0x39892c=_0x458623();while(!![]){try{const _0x3840d0=-parseInt(_0x1c007f(0xfa))/0x1+-parseInt(_0x1c007f(0x12d))/0x2+parseInt(_0x1c007f(0xed))/0x3+parseInt(_0x1c007f(0x118))/0x4*(parseInt(_0x1c007f(0xfb))/0x5)+-parseInt(_0x1c007f(0x112))/0x6*(-parseInt(_0x1c007f(0x11a))/0x7)+parseInt(_0x1c007f(0x124))/0x8*(-parseInt(_0x1c007f(0x100))/0x9)+-parseInt(_0x1c007f(0x126))/0xa*(parseInt(_0x1c007f(0xec))/0xb);if(_0x3840d0===_0x17a2ab)break;else _0x39892c['push'](_0x39892c['shift']());}catch(_0x29b413){_0x39892c['push'](_0x39892c['shift']());}}}(_0x1d09,0xd4084));const canva=document[_0x4426bf(0x12b)](_0x4426bf(0x115)),ctxs=canva['getContext']('2d'),letters=_0x4426bf(0xf3)[_0x4426bf(0x11e)](''),fontSize=0x10;let columns=Math[_0x4426bf(0x109)](window[_0x4426bf(0xef)]/fontSize);function _0x55e4(_0x219eba,_0x2096e0){const _0x1d09be=_0x1d09();return _0x55e4=function(_0x55e4ff,_0x5e3bdb){_0x55e4ff=_0x55e4ff-0xec;let _0x5a58ac=_0x1d09be[_0x55e4ff];return _0x5a58ac;},_0x55e4(_0x219eba,_0x2096e0);}const drops=Array(columns)[_0x4426bf(0x10d)](0x1);function resizeRainCanvas(){const _0x2345a3=_0x4426bf;canva[_0x2345a3(0x104)]=window[_0x2345a3(0xef)],canva['height']=window[_0x2345a3(0x102)],columns=Math[_0x2345a3(0x109)](canva[_0x2345a3(0x104)]/fontSize),drops[_0x2345a3(0x117)]=columns,drops[_0x2345a3(0x10d)](0x1);}function drawRainBackground(){const _0x407b8a=_0x4426bf;ctxs[_0x407b8a(0xf8)]='rgba(0,\x200,\x200,\x200.05)',ctxs['fillRect'](0x0,0x0,canva[_0x407b8a(0x104)],canva[_0x407b8a(0x121)]),ctxs['fillStyle']='rgb(195,\x20130,\x20255)',ctxs[_0x407b8a(0xee)]=fontSize+'px\x20Playpen\x20Sans';for(let _0x279d6f=0x0;_0x279d6f<drops[_0x407b8a(0x117)];_0x279d6f++){const _0x11fe3f=letters[Math[_0x407b8a(0x109)](Math[_0x407b8a(0x10b)]()*letters[_0x407b8a(0x117)])];ctxs[_0x407b8a(0x101)](_0x11fe3f,_0x279d6f*fontSize,drops[_0x279d6f]*fontSize),(drops[_0x279d6f]*fontSize>canva[_0x407b8a(0x121)]||Math['random']()>0.95)&&(drops[_0x279d6f]=0x0),drops[_0x279d6f]++;}}resizeRainCanvas(),window[_0x4426bf(0x108)]('resize',resizeRainCanvas),setInterval(drawRainBackground,0x32);const nextPageBtn=document[_0x4426bf(0x12b)](_0x4426bf(0x11f));function showStickerAndButton(){const _0x27ecff=_0x4426bf;sticker[_0x27ecff(0x10c)]&&sticker[_0x27ecff(0x10c)]!==window[_0x27ecff(0x11c)]['href']&&''!==sticker[_0x27ecff(0x10c)][_0x27ecff(0x10e)]()&&(sticker[_0x27ecff(0x111)][_0x27ecff(0x119)]=_0x27ecff(0xf7),nextPageBtn['style'][_0x27ecff(0x119)]='block');}function hideStickerAndButton(){const _0x96f479=_0x4426bf;sticker[_0x96f479(0x111)][_0x96f479(0x119)]=_0x96f479(0x12f),nextPageBtn['style'][_0x96f479(0x119)]=_0x96f479(0x12f);}function morphToNextText(){const _0x5b2ada=_0x4426bf;if(currentIndex++,currentIndex>=texts[_0x5b2ada(0x117)])return particles=[],ctx[_0x5b2ada(0x110)](0x0,0x0,canvas[_0x5b2ada(0x104)],canvas[_0x5b2ada(0x121)]),canvas[_0x5b2ada(0x111)][_0x5b2ada(0x119)]='none',showStickerAndButton(),void(stopAnimation=!0x0);interpolateParticles(generateDots(texts[currentIndex])),lastMorphTime=Date['now']();}function stopAnimationFunc(){const _0x4812f2=_0x4426bf;rotateWarning[_0x4812f2(0x111)]['display']='block',mainCanvas[_0x4812f2(0x111)][_0x4812f2(0x119)]=_0x4812f2(0x12f),mainSticker[_0x4812f2(0x111)][_0x4812f2(0x119)]='none',window['innerWidth']<=0x300&&window[_0x4812f2(0x102)]>window[_0x4812f2(0xef)]?nextPageBtn[_0x4812f2(0x111)][_0x4812f2(0x119)]=_0x4812f2(0xf7):nextPageBtn[_0x4812f2(0x111)][_0x4812f2(0x119)]=_0x4812f2(0x12f),stopAnimation=!0x0,animationRunning=!0x1;}nextPageBtn[_0x4426bf(0x108)](_0x4426bf(0x11d),()=>{const _0x271e46=_0x4426bf;window[_0x271e46(0x11c)][_0x271e46(0x116)]=_0x271e46(0xfc);});const canvas=document[_0x4426bf(0x12b)]('canvas'),ctx=canvas[_0x4426bf(0x114)]('2d'),isMobile=window[_0x4426bf(0xef)]<0x300,gap=isMobile?0x4:0x5,shapeCanvas=document['createElement'](_0x4426bf(0x125));shapeCanvas[_0x4426bf(0x104)]=canvas[_0x4426bf(0x104)]=window[_0x4426bf(0xef)],shapeCanvas[_0x4426bf(0x121)]=canvas[_0x4426bf(0x121)]=window['innerHeight'];const shapeCtx=shapeCanvas[_0x4426bf(0x114)]('2d');let inputText='Chúc\x20mừng|sinh\x20nhật|bạn\x20yêu|🎂',gif=_0x4426bf(0x105);const sticker=document[_0x4426bf(0x12b)](_0x4426bf(0xf4));gif&&''!==gif[_0x4426bf(0x10e)]()&&(sticker[_0x4426bf(0x10c)]=decodeURIComponent(gif));const bgm=document['getElementById'](_0x4426bf(0xf0)),music=_0x4426bf(0xf5);function _0x1d09(){const _0x2a5e4d=['max','random','src','fill','trim','bold\x20','clearRect','style','6ItUoaL','push','getContext','rainCanvas','href','length','362552bHNbsQ','display','11867891ybcKuT','map','location','click','split','nextPageBtn','#fff','height','catch','getImageData','8lLrqzL','canvas','33530RnlOwj','warn','speed','abs','px\x20Segoe\x20UI','getElementById','middle','511290UVaOfJ','Chờ\x20người\x20dùng\x20click\x20để\x20phát\x20nhạc.','none','1793mbohog','3581289VAqPWm','font','innerWidth','bgm','progress','orientationchange','Happy\x20Birthday','sticker','./img/Ly.mp3','white','block','fillStyle','play','280279OxsIgp','40HnGoet','./galaxy.html','replace','paused','now','14969997tJZQHl','fillText','innerHeight','arc','width','./img/a2.jpg','resize','filter','addEventListener','floor'];_0x1d09=function(){return _0x2a5e4d;};return _0x1d09();}music&&''!==music[_0x4426bf(0x10e)]()&&(bgm[_0x4426bf(0x10c)]=decodeURIComponent(music),bgm['play']()[_0x4426bf(0x122)](()=>{const _0x14914f=_0x4426bf;console[_0x14914f(0x127)](_0x14914f(0x12e));}),document['addEventListener'](_0x4426bf(0x11d),()=>{const _0x5154fb=_0x4426bf;bgm[_0x5154fb(0xfe)]&&bgm[_0x5154fb(0xf9)]()[_0x5154fb(0x122)](()=>{const _0x1e2043=_0x5154fb;console[_0x1e2043(0x127)]('Không\x20thể\x20phát\x20nhạc\x20do\x20trình\x20duyệt.');});}));const texts=inputText['split']('|')[_0x4426bf(0x107)](_0x28c593=>''!==_0x28c593[_0x4426bf(0x10e)]());let currentIndex=0x0,particles=[],morphDelay=0x258,lastMorphTime=Date[_0x4426bf(0xff)](),stopAnimation=!0x1;function getFittedFont(_0x1583d2){const _0x3566f1=_0x4426bf;let _0x365640=0xc8;shapeCtx[_0x3566f1(0xee)]=_0x3566f1(0x10f)+_0x365640+'px\x20Segoe\x20UI';let _0x2ae2a0=shapeCtx['measureText'](_0x1583d2[_0x3566f1(0xfd)]('\x0a',''))[_0x3566f1(0x104)];for(;(_0x2ae2a0>0.9*shapeCanvas['width']||_0x365640>0.8*shapeCanvas['height'])&&_0x365640>0xa;)_0x365640-=0x5,shapeCtx[_0x3566f1(0xee)]=_0x3566f1(0x10f)+_0x365640+_0x3566f1(0x12a),_0x2ae2a0=shapeCtx['measureText'](_0x1583d2[_0x3566f1(0xfd)]('\x0a',''))[_0x3566f1(0x104)];return window['innerWidth']<0x190&&(_0x365640=Math['min'](_0x365640,0x50)),_0x365640;}function generateDots(_0x31b87a){const _0x48e40b=_0x4426bf;shapeCtx[_0x48e40b(0x110)](0x0,0x0,shapeCanvas[_0x48e40b(0x104)],shapeCanvas['height']);const _0x5e72c4=_0x31b87a[_0x48e40b(0x11e)]('\x0a'),_0x435251=getFittedFont(_0x31b87a);shapeCtx[_0x48e40b(0xee)]=_0x48e40b(0x10f)+_0x435251+_0x48e40b(0x12a),shapeCtx[_0x48e40b(0xf8)]=_0x48e40b(0x120),shapeCtx['textAlign']='center',shapeCtx['textBaseline']=_0x48e40b(0x12c);const _0xec7dc6=1.2*_0x435251,_0x34170c=_0xec7dc6*_0x5e72c4[_0x48e40b(0x117)],_0x5537df=shapeCanvas[_0x48e40b(0x121)]/0x2-_0x34170c/0x2+_0xec7dc6/0x2;for(let _0x2973bf=0x0;_0x2973bf<_0x5e72c4[_0x48e40b(0x117)];_0x2973bf++)shapeCtx[_0x48e40b(0x101)](_0x5e72c4[_0x2973bf],shapeCanvas[_0x48e40b(0x104)]/0x2,_0x5537df+_0x2973bf*_0xec7dc6);const _0x595d54=shapeCtx[_0x48e40b(0x123)](0x0,0x0,shapeCanvas[_0x48e40b(0x104)],shapeCanvas[_0x48e40b(0x121)])['data'],_0x19ad58=[];for(let _0x3e4e88=0x0;_0x3e4e88<shapeCanvas[_0x48e40b(0x121)];_0x3e4e88+=gap)for(let _0x4a7e35=0x0;_0x4a7e35<shapeCanvas[_0x48e40b(0x104)];_0x4a7e35+=gap){_0x595d54[0x4*(_0x3e4e88*shapeCanvas[_0x48e40b(0x104)]+_0x4a7e35)+0x3]>0x80&&_0x19ad58[_0x48e40b(0x113)]({'x':_0x4a7e35,'y':_0x3e4e88});}return _0x19ad58;}function interpolateParticles(_0x1d1de4){const _0x10fb51=_0x4426bf,_0x37ff3c=Math[_0x10fb51(0x10a)](particles[_0x10fb51(0x117)],_0x1d1de4[_0x10fb51(0x117)]),_0x1ad613=[];for(let _0x1f3583=0x0;_0x1f3583<_0x37ff3c;_0x1f3583++){const _0x14c89b=particles[_0x1f3583%particles['length']]||{'x':canvas[_0x10fb51(0x104)]/0x2,'y':canvas[_0x10fb51(0x121)]/0x2},_0x349e05=_0x1d1de4[_0x1f3583%_0x1d1de4[_0x10fb51(0x117)]];_0x1ad613[_0x10fb51(0x113)]({'x':_0x14c89b['x'],'y':_0x14c89b['y'],'tx':_0x349e05['x'],'ty':_0x349e05['y'],'progress':0x0,'speed':0.03+0.02*Math['random']()});}particles=_0x1ad613;}function updateParticles(){const _0x1e2ee5=_0x4426bf;for(let _0x143579 of particles)_0x143579[_0x1e2ee5(0xf1)]<0x1&&(_0x143579[_0x1e2ee5(0xf1)]+=_0x143579[_0x1e2ee5(0x128)],_0x143579[_0x1e2ee5(0xf1)]>0x1&&(_0x143579[_0x1e2ee5(0xf1)]=0x1)),_0x143579['x']+=(_0x143579['tx']-_0x143579['x'])*_0x143579['speed'],_0x143579['y']+=(_0x143579['ty']-_0x143579['y'])*_0x143579[_0x1e2ee5(0x128)];}function drawParticles(){const _0x5c7f1e=_0x4426bf;ctx[_0x5c7f1e(0x110)](0x0,0x0,canvas['width'],canvas['height']);for(let _0x45ea82 of particles)ctx[_0x5c7f1e(0xf8)]=_0x5c7f1e(0xf6),ctx['beginPath'](),ctx[_0x5c7f1e(0x103)](_0x45ea82['x'],_0x45ea82['y'],isMobile?1.3:2.3,0x0,0x2*Math['PI']),ctx[_0x5c7f1e(0x10d)]();}function morphToNextText(){const _0x294cba=_0x4426bf;if(currentIndex++,currentIndex>=texts[_0x294cba(0x117)])return particles=[],ctx[_0x294cba(0x110)](0x0,0x0,canvas[_0x294cba(0x104)],canvas[_0x294cba(0x121)]),canvas[_0x294cba(0x111)][_0x294cba(0x119)]=_0x294cba(0x12f),showStickerAndButton(),void(stopAnimation=!0x0);interpolateParticles(generateDots(texts[currentIndex])),lastMorphTime=Date['now']();}function animate(){const _0x4bd7f3=_0x4426bf;if(stopAnimation)return;updateParticles(),drawParticles(),(particles['every'](_0x253b7b=>Math[_0x4bd7f3(0x129)](_0x253b7b['x']-_0x253b7b['tx'])<0.5&&Math[_0x4bd7f3(0x129)](_0x253b7b['y']-_0x253b7b['ty'])<0.5)&&Date[_0x4bd7f3(0xff)]()-lastMorphTime>morphDelay&&morphToNextText(),requestAnimationFrame(animate));}const firstDots=generateDots(texts[0x0]);function isLandscape(){const _0x56c8e6=_0x4426bf;return window['innerWidth']>window[_0x56c8e6(0x102)];}particles=firstDots[_0x4426bf(0x11b)](_0x5a770c=>({'x':canvas[_0x4426bf(0x104)]/0x2,'y':canvas['height']/0x2,'tx':_0x5a770c['x'],'ty':_0x5a770c['y'],'progress':0x0,'speed':0.05+0.05*Math[_0x4426bf(0x10b)]()})),canvas[_0x4426bf(0x111)][_0x4426bf(0x119)]=_0x4426bf(0x12f),setTimeout(()=>{canvas['style']['display']='block',lastMorphTime=Date['now'](),animate();},0x3e8);const rotateWarning=document[_0x4426bf(0x12b)]('rotateWarning'),mainCanvas=canvas,mainSticker=sticker;let animationRunning=!0x1;function startAnimation(){const _0x593914=_0x4426bf;if(rotateWarning[_0x593914(0x111)][_0x593914(0x119)]='none',stopAnimation&&currentIndex>=texts[_0x593914(0x117)])return canvas[_0x593914(0x111)][_0x593914(0x119)]=_0x593914(0x12f),sticker[_0x593914(0x111)][_0x593914(0x119)]=_0x593914(0xf7),void(nextPageBtn[_0x593914(0x111)][_0x593914(0x119)]=_0x593914(0xf7));mainCanvas[_0x593914(0x111)][_0x593914(0x119)]=_0x593914(0xf7),mainSticker[_0x593914(0x111)][_0x593914(0x119)]='none',stopAnimation=!0x1,lastMorphTime=Date['now'](),animationRunning||(animationRunning=!0x0,animate());}function stopAnimationFunc(){const _0x5b8709=_0x4426bf;rotateWarning[_0x5b8709(0x111)][_0x5b8709(0x119)]=_0x5b8709(0xf7),mainCanvas[_0x5b8709(0x111)]['display']='none',_0x5b8709(0xf7)!==sticker[_0x5b8709(0x111)][_0x5b8709(0x119)]&&(mainSticker[_0x5b8709(0x111)][_0x5b8709(0x119)]='none'),stopAnimation=!0x0,animationRunning=!0x1;}function checkOrientationAndStart(){isLandscape()?startAnimation():stopAnimationFunc();}function onResizeOrOrientationChange(){const _0x3b31b9=_0x4426bf;if(canvas[_0x3b31b9(0x104)]=window[_0x3b31b9(0xef)],canvas[_0x3b31b9(0x121)]=window[_0x3b31b9(0x102)],shapeCanvas[_0x3b31b9(0x104)]=canvas['width'],shapeCanvas[_0x3b31b9(0x121)]=canvas[_0x3b31b9(0x121)],resizeRainCanvas(),texts[currentIndex]){const _0x1761c9=generateDots(texts[currentIndex]);particles=_0x1761c9['map'](_0x455a47=>({'x':canvas[_0x3b31b9(0x104)]/0x2,'y':canvas[_0x3b31b9(0x121)]/0x2,'tx':_0x455a47['x'],'ty':_0x455a47['y'],'progress':0x0,'speed':0.05+0.05*Math[_0x3b31b9(0x10b)]()}));}checkOrientationAndStart();}window['addEventListener'](_0x4426bf(0x106),onResizeOrOrientationChange),window['addEventListener'](_0x4426bf(0xf2),onResizeOrOrientationChange),checkOrientationAndStart();
+    </script>
+</body>
+
+</html>
